@@ -85,7 +85,7 @@ def schedulecost(sol):
         totalwait+=getminutes(returnf[0])-earliestdep
         
     if latestarrival<earliestdep:totalwait+50
-    print totalprice+totalwait
+    #print totalprice+totalwait
     return totalprice+totalwait
         
         
@@ -95,22 +95,71 @@ def schedulecost(sol):
 #随机搜索
 
 #domain 指定变量的最大最小值
+#成本 函数
 def randomoptimize(domain,costf):
+    best=9999999
+    bestr=None
+    #随机产生1000次猜测
+    for i in range(0,10):
+        #创建一个随机解 
+        #从0-9 中随机生产一个数字，加到
+        #domain[i][0]=0,domain[i][1]=9
+        r=[float(random.randint(domain[i][0],domain[i][1])) 
+            for i in range(len(domain))]
+        #得到成本
+        print r
+        cost=costf(r)
+        
+        #与目前为止的最优解进行比较
+        if cost<best:
+            best=cost
+            bestr=r
+    return r
+
+
+# 执行方法
+# 生产  人数2倍 的 (0,9) 
+
+domain=[(0,9)]*(len(people)*2)
+
+
+#s=randomoptimize(domain,schedulecost)
+
+#schedulecost(s)
+#print schedulecost(s)
+
+
+# 爬山法
+
+def hillclimb(domain,schedulecost):
+    sol=[float(random.randint(domain[i][0],domain[i][1])) 
+            for i in range(len(domain))]
+    #主循环
+    while 1:
+        #创建相邻解的列表
+        neighbors=[]
+        for j in range(len(domain)):
+            #在每个方向上相对于 原值 偏离一点
+            if sol[j]>domain[j][0]:
+                neighbors.append(sol[0:j]+[sol[j]-1]+sol[j+1:])
+            if sol[j]<domain[j][0]:
+                neighbors.append(sol[0:j]+[sol[j]+1]+sol[j+1:])
+        # 在相邻解中寻找最优解
+        current=costf(sol)
+        best=current
+        for j in range(len(neighbors)):
+            cost=costf(neighbors[j])
+            if cost<best:
+                best=cost
+                sol=neighbors[j]
+        if best==current:
+                break
+        return sol
+                
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+hillclimb(domain,schedulecost)
   
   
   
