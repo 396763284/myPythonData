@@ -74,8 +74,33 @@ def function3():
 
 def function3():
     df=DataFrame([[1.4,np.nan],[7.1,-4.5],[np.nan,np.nan],[0.75,-1.3]],index=['a','b','c','d'],columns=['one','two'])
-    print df
+    #汇总统计
+    print df.describe()
     
+    # data.iteritems(): 迭代字典
+    #相关系数和协方差
+    
+    #处理缺失数据
+    
+    string_data=Series(['aa','bb','cc',np.nan])
+    # 返回仅含非空数据
+    print string_data.dropna()
+   #dataframe  dropna 丢弃任何含有缺失值
+    cleaned =df.dropna()
+    print cleaned
+    #dropna 丢弃全为nan
+    cleaned1 =df.dropna(how='all')
+    
+    df1=DataFrame(np.random.randn(7,3))
+    df1.ix[2:,1]=np.nan;df1.ix[4:,2]=np.nan
+    #Keep only the rows with at least 2 non-na values:
+    print df1
+    print df1.dropna(thresh=3)
+    
+    #填充缺少数据
+    
+    #df1.fillna(0)
+    print df1.fillna(method='ffill')
     
     
 function3()    
